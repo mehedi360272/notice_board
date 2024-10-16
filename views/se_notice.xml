@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--        Tree view start-->
+        <record id="se_notice_view_tree" model="ir.ui.view">
+            <field name="name">se_notice_view_tree</field>
+            <field name="model">se.notice.board</field>
+            <field name="arch" type="xml">
+                <tree decoration-info="state == 'draft'" multi_edit="1">
+                    <field name="sequence" string="Reference"/>
+                    <field name="name"/>
+                    <field name="department_ids"/>
+                    <field name="department_all"/>
+                    <field name="notice_type"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="state" widget="badge"
+                           decoration-success="state == 'done'"
+                           decoration-danger="state == 'cancel'"
+                           decoration-warning="state == 'confirm'"
+                           decoration-info="state == 'draft'"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--form view start-->
+        <record id="se_notice_view_form" model="ir.ui.view">
+            <field name="name">se_notice_view_form</field>
+            <field name="model">se.notice.board</field>
+            <field name="arch" type="xml">
+                <form>
+
+                    <!--status bar start-->
+                    <header>
+                        <button id="button_confirm" name="action_confirm" string="Confirm" class="btn-primary"
+                                type="object"
+                                invisible="state != 'draft'"/>
+
+                        <button id="button_done" name="action_done" string="Publish" class="btn-primary" type="object"
+                                invisible="state != 'confirm'"/>
+
+                        <button id="button_draft" name="action_draft" string="Set To Draft" class="btn-primary"
+                                type="object"
+                                invisible="state != 'cancel'"/>
+
+                        <button class="btn-danger" id="button_cancel" name="action_cancel" string="Cancel" type="object"
+                                invisible="state not in ['draft', 'done', 'confirm']"/>
+
+                        <field name="state" widget="statusbar" statusbar_visible="draft,done,confirm"/>
+                    </header>
+
+
+                    <sheet>
+                        <field name="active" invisible="1"/>
+                        <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                        <div class="oe_title">
+                            <h4 class="text-primary">
+                                <field name="sequence" readonly="1"/>
+                            </h4>
+                            <br></br>
+                        </div>
+
+                        <group>
+                            <field name="name"/>
+                        </group>
+
+                        <group>
+                            <group>
+                                <field name="start_date"/>
+                            </group>
+                            <group>
+                                <field name="end_date"/>
+                                <field name="notice_id"/>
+                            </group>
+                        </group>
+
+
+                        <group>
+                            <field name="notice_type" invisible="1"/>
+                        </group>
+
+                        <notebook>
+                            <!--notice department-->
+                            <page class="text-primary" name="department" string="Department">
+                                <group>
+                                    <group>
+                                        <field name="department_all"/>
+                                    </group>
+                                    <group>
+                                        <field name="department_ids" invisible="department_all"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <!--notice description-->
+                            <page class="text-primary" name="notice_description" string="Notice Descriptions">
+                                <field name="notice_description"/>
+                            </page>
+
+                            <!--attachment file upload-->
+                            <page class="text-primary" name="attachments" string="Attachments">
+                                <field name="attachments" widget="many2many_binary"/>
+                            </page>
+
+                            <!--note-->
+                            <page class="text-primary" name="note" string="Note">
+                                <field name="note"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+
+                    <!--chatter option-->
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="open_view_notice_action_1" model="ir.actions.act_window">
+            <field name="name">Notice Board</field>
+            <field name="res_model">se.notice.board</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+
+        </record>
+
+    </data>
+
+</odoo>

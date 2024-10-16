@@ -1,0 +1,26 @@
+<odoo>
+    <data>
+        <!--        #main menu-->
+        <menuitem
+                id="root_menu_notice_board"
+                name="Notice Board"/>
+        <menuitem
+                id="menu_notice_board"
+                name="Notice"
+                parent="root_menu_notice_board"
+                action="open_view_notice_action_1"
+                sequence="20"/>
+
+
+        <menuitem name="Configuration"
+                  id="menu_action_menu_Configuration"
+                  parent="root_menu_notice_board"
+                  sequence="30"/>
+        <menuitem name="Notice type"
+                  id="menu_action_menu_category"
+                  parent="menu_action_menu_Configuration"
+                  action="open_view_configuration_action"
+                  sequence="40"/>
+
+    </data>
+</odoo>
